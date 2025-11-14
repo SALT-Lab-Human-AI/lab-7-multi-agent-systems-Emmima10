@@ -138,6 +138,55 @@ def search_travel_costs(destination: str) -> str:
     """
 
 
+@tool
+def search_ux_best_practices(app_type: str = "travel planning") -> str:
+    """
+    Search for UX/UI best practices and design patterns for travel applications.
+    Provides guidance on user interface design, accessibility, and user experience.
+    """
+    return f"""
+    Research task: Find UX/UI best practices for {app_type} applications.
+
+    Please research and provide:
+    1. Current design trends and patterns for travel apps
+    2. User interface best practices for booking and planning
+    3. Accessibility guidelines (WCAG standards)
+    4. Mobile-first design considerations
+    5. Color schemes and visual hierarchy recommendations
+    6. User flow optimization techniques
+    7. Examples of award-winning travel app designs
+
+    Focus on creating intuitive, user-friendly interfaces that enhance the travel planning experience.
+    """
+
+
+@tool
+def search_restaurants_dining(destination: str) -> str:
+    """
+    Search for restaurants, local cuisine, and dining experiences in a destination.
+    Provides information about must-try dishes, food tours, and culinary highlights.
+    """
+    search_query = f"{destination} restaurants local cuisine must try dishes food tours 2026"
+
+    return f"""
+    Research task: Find dining and culinary information for {destination}.
+
+    Please research and provide:
+    1. Top-rated restaurants (fine dining, mid-range, budget-friendly)
+    2. Must-try local dishes and traditional cuisine
+    3. Food tours and culinary experiences available
+    4. Local markets and street food recommendations
+    5. Dietary accommodation options (vegetarian, vegan, gluten-free, halal, kosher)
+    6. Restaurant reservation tips and best dining times
+    7. Average meal costs at different restaurant types
+    8. Unique culinary experiences (cooking classes, wine tastings, farm visits)
+    9. Food safety and dining etiquette tips
+
+    Provide real restaurant names, current reviews, and authentic culinary recommendations.
+    Focus on creating memorable dining experiences that showcase local food culture.
+    """
+
+
 # ============================================================================
 # AGENT DEFINITIONS
 # ============================================================================
@@ -145,15 +194,19 @@ def search_travel_costs(destination: str) -> str:
 def create_flight_agent(destination: str, trip_dates: str):
     """Create the Flight Specialist agent with real research tools."""
     return Agent(
-        role="Flight Specialist",
+        role="Senior Aviation Travel Consultant",
         goal=f"Research and recommend the best flight options for the {destination} trip "
              f"({trip_dates}), considering dates, airlines, prices, and flight durations. "
              f"Use real data from flight booking sites to provide accurate, current pricing.",
-        backstory="You are an experienced flight specialist with deep knowledge of "
-                  "airline schedules, pricing patterns, and travel routes. You excel at "
-                  "finding the best flight options that balance cost and convenience. "
-                  "You have booked thousands of flights and know the best times to fly. "
-                  "You always research current prices and use real booking site data.",
+        backstory="You are a seasoned aviation travel consultant with over 15 years of experience "
+                  "in the airline industry. You have deep insider knowledge of airline schedules, "
+                  "pricing patterns, seasonal trends, and hidden travel routes. You excel at finding "
+                  "the best flight options that perfectly balance cost, convenience, and comfort. "
+                  "Having personally booked over 10,000 international flights, you understand the "
+                  "nuances of different airlines, airport connections, and optimal travel times. "
+                  "You leverage relationships with major booking platforms and always research "
+                  "current prices using real booking site data to ensure your clients get the "
+                  "absolute best deals.",
         tools=[search_flight_prices],
         verbose=True,
         allow_delegation=False
@@ -172,15 +225,20 @@ def create_hotel_agent(destination: str, trip_dates: str):
         hotel_location = "Tokyo"
 
     return Agent(
-        role="Accommodation Specialist",
+        role="Luxury Hospitality Concierge",
         goal=f"Suggest top-rated hotels in {hotel_location} for the {destination} trip "
              f"({trip_dates}), considering amenities, location, and value for money. "
              f"Use real hotel data from booking sites with current prices and reviews.",
-        backstory="You are a seasoned accommodation expert with extensive knowledge of "
-                  "hotels worldwide. You understand traveler needs and can match them with "
-                  "perfect accommodations. You read reviews meticulously and know which "
-                  "hotels offer the best experience for different budgets. You always "
-                  "check current availability and actual guest reviews.",
+        backstory="You are an elite hospitality concierge with over 20 years of global experience "
+                  "in luxury and boutique hotels. You have personally visited and evaluated thousands "
+                  "of accommodations across 6 continents, building relationships with hotel managers "
+                  "and understanding the intimate details of each property. You possess an exceptional "
+                  "ability to match travelers' personalities, preferences, and budgets with the perfect "
+                  "accommodations. You meticulously analyze guest reviews, identifying patterns that "
+                  "reveal true quality beyond star ratings. Your expertise spans from budget-friendly "
+                  "gems to ultra-luxury resorts, and you always stay current with the latest openings, "
+                  "renovations, and seasonal offerings. You check real-time availability and verify "
+                  "actual guest reviews to ensure your recommendations exceed expectations.",
         tools=[search_hotel_options],
         verbose=True,
         allow_delegation=False
@@ -190,15 +248,20 @@ def create_hotel_agent(destination: str, trip_dates: str):
 def create_itinerary_agent(destination: str, trip_duration: str):
     """Create the Travel Planner agent with real research tools."""
     return Agent(
-        role="Travel Planner",
+        role="Expert Destination Curator & Adventure Designer",
         goal=f"Create a detailed day-by-day travel plan with activities and attractions "
              f"that maximize the {destination} experience in {trip_duration}. "
              f"Use real current information about attractions, opening hours, and accessibility.",
-        backstory=f"You are a creative travel planner with a passion for {destination}. "
-                  f"You have extensive knowledge of {destination}'s attractions, culture, and hidden gems. "
-                  f"You create itineraries that are well-paced, exciting, and memorable. "
-                  f"You consider travel times, weather, and traveler preferences to craft the perfect journey. "
-                  f"You always verify current information about attractions and tours.",
+        backstory=f"You are an award-winning destination curator and adventure designer with a profound "
+                  f"passion for {destination}. Having lived in and explored {destination} extensively over "
+                  f"the past decade, you possess insider knowledge that goes far beyond typical tourist guides. "
+                  f"You have documented {destination}'s attractions, hidden cultural gems, local secrets, and "
+                  f"off-the-beaten-path experiences that create truly memorable journeys. Your expertise includes "
+                  f"understanding optimal timing for attractions, seasonal weather patterns, local festivals, and "
+                  f"the perfect flow between activities to avoid tourist crowds. You craft meticulously paced "
+                  f"itineraries that balance adventure with relaxation, cultural immersion with natural beauty, "
+                  f"and popular landmarks with authentic local experiences. You always verify current opening hours, "
+                  f"seasonal accessibility, and real-time conditions to ensure flawless execution.",
         tools=[search_attractions_activities],
         verbose=True,
         allow_delegation=False
@@ -208,15 +271,69 @@ def create_itinerary_agent(destination: str, trip_duration: str):
 def create_budget_agent(destination: str):
     """Create the Financial Advisor agent with real cost research tools."""
     return Agent(
-        role="Financial Advisor",
+        role="Strategic Travel Finance Optimizer",
         goal=f"Calculate total trip costs for {destination} and identify cost-saving opportunities "
              f"while maintaining quality. Use real current pricing data for all expenses.",
-        backstory="You are a meticulous financial advisor specializing in travel budgeting. "
-                  "You can analyze costs across flights, accommodations, activities, and meals. "
-                  "You identify hidden costs and suggest smart ways to save money without "
-                  "compromising the travel experience. You research actual current prices "
-                  "and provide realistic budget estimates.",
+        backstory="You are a certified financial planner and strategic travel finance optimizer with "
+                  "a specialized focus on maximizing travel value. With an MBA in Finance and 12 years "
+                  "of experience analyzing travel expenditures across 80+ countries, you possess an "
+                  "exceptional ability to break down every cost component of international trips. Your "
+                  "expertise includes real-time currency analysis, seasonal pricing trends, hidden fee "
+                  "identification, and strategic booking timing. You meticulously analyze costs across "
+                  "flights, accommodations, activities, meals, transportation, and miscellaneous expenses. "
+                  "You excel at finding creative cost-saving opportunities—from credit card rewards and "
+                  "loyalty programs to off-peak bookings and local alternatives—without ever compromising "
+                  "the quality of the travel experience. You always research actual current prices from "
+                  "multiple sources and provide realistic, data-driven budget estimates with detailed "
+                  "breakdowns and actionable savings strategies.",
         tools=[search_travel_costs],
+        verbose=True,
+        allow_delegation=False
+    )
+
+
+def create_food_specialist_agent(destination: str):
+    """Create the Food & Dining Specialist agent with culinary research tools."""
+    return Agent(
+        role="Master Culinary Explorer & Dining Curator",
+        goal=f"Discover and recommend the finest dining experiences, local cuisine, and culinary "
+             f"adventures in {destination}, from hidden local gems to renowned restaurants.",
+        backstory=f"You are a passionate culinary explorer and certified food critic with 15+ years "
+                  f"of experience discovering and documenting authentic dining experiences worldwide. "
+                  f"You have a refined palate and deep appreciation for {destination}'s food culture, "
+                  f"having spent extensive time exploring its culinary landscape from street food stalls "
+                  f"to Michelin-starred establishments. Your expertise encompasses traditional cooking "
+                  f"techniques, regional ingredients, seasonal specialties, and the stories behind iconic "
+                  f"dishes. You maintain relationships with local chefs, food artisans, and restaurant owners, "
+                  f"giving you insider access to the best dining spots before they become tourist traps. "
+                  f"You understand dietary restrictions and can recommend excellent options for vegetarians, "
+                  f"vegans, and those with food allergies. Your recommendations balance authenticity with "
+                  f"accessibility, ensuring travelers experience genuine local flavors while feeling comfortable. "
+                  f"You stay current with restaurant openings, seasonal menus, and food trends, and you always "
+                  f"verify current reviews and actual dining experiences to ensure your recommendations exceed expectations.",
+        tools=[search_restaurants_dining],
+        verbose=True,
+        allow_delegation=False
+    )
+
+
+def create_ux_designer_agent():
+    """Create the UX/UI Designer agent with design research tools."""
+    return Agent(
+        role="Senior UX/UI Travel Experience Designer",
+        goal="Design an intuitive and visually appealing user interface for the travel planning "
+             "application, ensuring excellent user experience, accessibility, and modern design patterns.",
+        backstory="You are an award-winning UX/UI designer with 10+ years of experience specializing "
+                  "in travel and booking applications. You have designed interfaces for leading travel "
+                  "companies and have a deep understanding of user psychology, design patterns, and "
+                  "accessibility standards. You excel at creating wireframes, mockups, and user flows "
+                  "that are both beautiful and functional. Your designs have won multiple industry awards "
+                  "for innovation and usability. You stay current with the latest design trends, "
+                  "including mobile-first design, progressive web apps, and inclusive design practices. "
+                  "You understand that great design balances aesthetics with functionality, and you "
+                  "always prioritize user needs while maintaining brand consistency. Your expertise "
+                  "includes Material Design, iOS Human Interface Guidelines, and WCAG accessibility standards.",
+        tools=[search_ux_best_practices],
         verbose=True,
         allow_delegation=False
     )
@@ -285,22 +402,65 @@ def create_itinerary_task(itinerary_agent, destination: str, trip_duration: str,
     )
 
 
+def create_food_dining_task(food_agent, destination: str, trip_duration: str, trip_dates: str):
+    """Define the food and dining recommendation task using real restaurant data."""
+    return Task(
+        description=f"Based on the {trip_duration} itinerary for {destination} ({trip_dates}), "
+                   f"create a comprehensive culinary guide with REAL restaurant recommendations and "
+                   f"dining experiences. Research actual restaurants on TripAdvisor, Google Reviews, "
+                   f"and local food blogs. For each day of the itinerary, recommend specific restaurants "
+                   f"for breakfast, lunch, and dinner that are near the planned activities. Include: "
+                   f"1) Must-try local dishes and where to find them, 2) Top-rated restaurants (fine dining, "
+                   f"mid-range, budget-friendly) with real names and locations, 3) Food tours and cooking "
+                   f"classes available, 4) Local markets and street food spots, 5) Dietary accommodation "
+                   f"options, 6) Reservation tips and best dining times, 7) Average costs per meal at "
+                   f"different restaurant types, 8) Hidden gems known only to locals. Match dining "
+                   f"recommendations to the planned activities each day for convenience.",
+        agent=food_agent,
+        expected_output=f"A detailed culinary guide for {destination} including: day-by-day dining "
+                       f"recommendations with 15-20 REAL restaurant names, must-try dishes with specific "
+                       f"locations, food tour options with current pricing, local market recommendations, "
+                       f"dietary accommodation tips, reservation guidance, and average meal costs for "
+                       f"budget planning during the {trip_duration} trip"
+    )
+
+
 def create_budget_task(budget_agent, destination: str, trip_duration: str):
     """Define the budget calculation task using real cost data."""
     return Task(
-        description=f"Based on the REAL flight options, hotel recommendations, and itinerary "
-                   f"created by the other agents, calculate a comprehensive budget for the "
+        description=f"Based on the REAL flight options, hotel recommendations, itinerary, and dining "
+                   f"recommendations created by the other agents, calculate a comprehensive budget for the "
                    f"{trip_duration} {destination} trip using current pricing. Research and include actual "
-                   f"costs for flights, accommodation, meals (use real restaurant prices in the destination), "
-                   f"activities/tours (verified prices), transportation within {destination}, "
+                   f"costs for flights, accommodation, meals (use the specific restaurant prices from the "
+                   f"food specialist), activities/tours (verified prices), transportation within {destination}, "
                    f"and miscellaneous expenses. Provide total cost estimates "
                    f"for budget, mid-range, and luxury options based on real prices. Suggest "
                    f"genuine cost-saving tips based on current market conditions.",
         agent=budget_agent,
         expected_output=f"A comprehensive budget report with itemized REAL costs for flights, "
-                       f"accommodation, meals, activities with actual entry fees, transportation, "
-                       f"and total realistic estimates at different budget levels, plus "
+                       f"accommodation, meals (using actual restaurant prices), activities with actual entry fees, "
+                       f"transportation, and total realistic estimates at different budget levels, plus "
                        f"evidence-based cost-saving recommendations for a {trip_duration} trip to {destination}"
+    )
+
+
+def create_ux_design_task(ux_agent, destination: str, trip_duration: str):
+    """Define the UX/UI design task for the travel planning application."""
+    return Task(
+        description=f"Based on the complete travel plan (flights, hotels, itinerary, and budget), "
+                   f"design a comprehensive user interface and user experience for a travel planning "
+                   f"application focused on {destination} trips. Create detailed wireframes and user flows "
+                   f"that include: 1) Main dashboard showing trip overview, 2) Flight booking interface, "
+                   f"3) Hotel selection screens, 4) Day-by-day itinerary view, 5) Budget tracker, "
+                   f"6) Mobile-responsive design considerations. Research current UX best practices "
+                   f"for travel apps and ensure the design follows accessibility standards (WCAG). "
+                   f"Include color scheme recommendations, typography choices, and key interaction patterns. "
+                   f"The design should make trip planning intuitive, enjoyable, and efficient for users.",
+        agent=ux_agent,
+        expected_output=f"A detailed UX/UI design specification including: wireframe descriptions for "
+                       f"5-7 key screens, user flow diagrams, design system guidelines (colors, typography, "
+                       f"spacing), accessibility considerations, mobile-first design principles, and "
+                       f"interaction patterns that create an exceptional {destination} trip planning experience"
     )
 
 
@@ -361,17 +521,23 @@ def main(destination: str = "Iceland", trip_duration: str = "5 days",
     print()
 
     # Create agents with destination parameters
-    print("[1/4] Creating Flight Specialist Agent (researches real flights)...")
+    print("[1/6] Creating Flight Specialist Agent (researches real flights)...")
     flight_agent = create_flight_agent(destination, trip_dates)
 
-    print("[2/4] Creating Accommodation Specialist Agent (researches real hotels)...")
+    print("[2/6] Creating Accommodation Specialist Agent (researches real hotels)...")
     hotel_agent = create_hotel_agent(destination, trip_dates)
 
-    print("[3/4] Creating Travel Planner Agent (researches real attractions)...")
+    print("[3/6] Creating Travel Planner Agent (researches real attractions)...")
     itinerary_agent = create_itinerary_agent(destination, trip_duration)
 
-    print("[4/4] Creating Financial Advisor Agent (analyzes real costs)...")
+    print("[4/6] Creating Food & Dining Specialist Agent (curates culinary experiences)...")
+    food_specialist_agent = create_food_specialist_agent(destination)
+
+    print("[5/6] Creating Financial Advisor Agent (analyzes real costs)...")
     budget_agent = create_budget_agent(destination)
+
+    print("[6/6] Creating UX/UI Designer Agent (designs travel app interface)...")
+    ux_designer_agent = create_ux_designer_agent()
 
     print("\n✅ All agents created successfully!")
     print()
@@ -381,19 +547,21 @@ def main(destination: str = "Iceland", trip_duration: str = "5 days",
     flight_task = create_flight_task(flight_agent, destination, trip_dates, departure_city)
     hotel_task = create_hotel_task(hotel_agent, destination, trip_dates)
     itinerary_task = create_itinerary_task(itinerary_agent, destination, trip_duration, trip_dates)
+    food_dining_task = create_food_dining_task(food_specialist_agent, destination, trip_duration, trip_dates)
     budget_task = create_budget_task(budget_agent, destination, trip_duration)
+    ux_design_task = create_ux_design_task(ux_designer_agent, destination, trip_duration)
 
     print("Tasks created successfully!")
     print()
 
     # Create the crew with sequential task execution
     print("Forming the Travel Planning Crew...")
-    print("Task Sequence: FlightAgent → HotelAgent → ItineraryAgent → BudgetAgent")
+    print("Task Sequence: FlightAgent → HotelAgent → ItineraryAgent → FoodSpecialistAgent → BudgetAgent → UXDesignerAgent")
     print()
 
     crew = Crew(
-        agents=[flight_agent, hotel_agent, itinerary_agent, budget_agent],
-        tasks=[flight_task, hotel_task, itinerary_task, budget_task],
+        agents=[flight_agent, hotel_agent, itinerary_agent, food_specialist_agent, budget_agent, ux_designer_agent],
+        tasks=[flight_task, hotel_task, itinerary_task, food_dining_task, budget_task, ux_design_task],
         verbose=True,
         process="sequential"  # Sequential task execution
     )
