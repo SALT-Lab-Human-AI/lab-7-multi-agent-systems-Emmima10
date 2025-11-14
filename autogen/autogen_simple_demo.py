@@ -27,9 +27,17 @@ class SimpleInterviewPlatformWorkflow:
             print("ERROR: Configuration validation failed!")
             exit(1)
 
-        self.client = OpenAI(api_key=Config.API_KEY, base_url=Config.API_BASE)
+        # Initialize OpenAI client with Groq or OpenAI API
+        self.client = OpenAI(
+            api_key=Config.API_KEY,
+            base_url=Config.API_BASE
+        )
         self.outputs = {}
         self.model = Config.OPENAI_MODEL
+        
+        # Print provider info
+        provider = "Groq" if Config.USE_GROQ else "OpenAI"
+        print(f"Using {provider} API with model: {self.model}")
 
     def run(self):
         """Execute the complete workflow"""
@@ -48,7 +56,10 @@ class SimpleInterviewPlatformWorkflow:
         # Phase 3: Blueprint
         self.phase_blueprint()
 
-        # Phase 4: Review
+        # Phase 4: UX Design
+        self.phase_ux_design()
+
+        # Phase 5: Review
         self.phase_review()
 
         # Summary
@@ -143,19 +154,56 @@ Create a product blueprint for our platform."""
         print("\n[BlueprintAgent Output]")
         print(self.outputs["blueprint"])
 
-    def phase_review(self):
-        """Phase 4: Strategic Review"""
+    def phase_ux_design(self):
+        """Phase 4: UX/UI Design"""
         print("\n" + "="*80)
-        print("PHASE 4: STRATEGIC REVIEW")
+        print("PHASE 4: USER EXPERIENCE DESIGN")
         print("="*80)
-        print("[ReviewerAgent is providing recommendations...]")
+        print("[UXDesignerAgent is creating interface designs...]")
 
-        system_prompt = """You are a product reviewer and strategist. Review the product blueprint
-and provide 3 strategic recommendations for success.
+        system_prompt = """You are a Senior UX/UI Designer. Based on the product blueprint,
+create detailed user interface designs including:
+- Key screens and their layouts
+- User flows and navigation
+- Visual design principles
+- Accessibility considerations
 Be concise - 150 words."""
 
         user_message = f"""Product Blueprint:
 {self.outputs['blueprint']}
+
+Design the user interface and experience for this platform."""
+
+        response = self.client.chat.completions.create(
+            model=self.model,
+            temperature=Config.AGENT_TEMPERATURE,
+            max_tokens=Config.AGENT_MAX_TOKENS,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ]
+        )
+
+        self.outputs["ux_design"] = response.choices[0].message.content
+        print("\n[UXDesignerAgent Output]")
+        print(self.outputs["ux_design"])
+
+    def phase_review(self):
+        """Phase 5: Strategic Review"""
+        print("\n" + "="*80)
+        print("PHASE 5: STRATEGIC REVIEW")
+        print("="*80)
+        print("[ReviewerAgent is providing recommendations...]")
+
+        system_prompt = """You are a product reviewer and strategist. Review the product blueprint
+and UX design, then provide 3 strategic recommendations for success.
+Be concise - 150 words."""
+
+        user_message = f"""Product Blueprint:
+{self.outputs['blueprint']}
+
+UX Design:
+{self.outputs['ux_design']}
 
 Provide strategic review and recommendations."""
 
@@ -180,11 +228,12 @@ Provide strategic review and recommendations."""
         print("="*80)
 
         print("""
-This workflow demonstrated a 4-agent collaboration:
+This workflow demonstrated a 5-agent collaboration:
 1. ResearchAgent - Analyzed the market
 2. AnalysisAgent - Identified opportunities
 3. BlueprintAgent - Designed the product
-4. ReviewerAgent - Provided strategic recommendations
+4. UXDesignerAgent - Created user interface designs
+5. ReviewerAgent - Provided strategic recommendations
 
 Each agent received context from the previous agent's output,
 demonstrating the sequential workflow pattern of AutoGen.
@@ -211,7 +260,12 @@ demonstrating the sequential workflow pattern of AutoGen.
         print(self.outputs["blueprint"])
         
         print("\n" + "-"*80)
-        print("PHASE 4: STRATEGIC REVIEW (Full Output)")
+        print("PHASE 4: USER EXPERIENCE DESIGN (Full Output)")
+        print("-"*80)
+        print(self.outputs["ux_design"])
+        
+        print("\n" + "-"*80)
+        print("PHASE 5: STRATEGIC REVIEW (Full Output)")
         print("-"*80)
         print(self.outputs["review"])
 
@@ -241,7 +295,12 @@ demonstrating the sequential workflow pattern of AutoGen.
             f.write(self.outputs["blueprint"] + "\n")
             
             f.write("\n" + "-"*80 + "\n")
-            f.write("PHASE 4: STRATEGIC REVIEW\n")
+            f.write("PHASE 4: USER EXPERIENCE DESIGN\n")
+            f.write("-"*80 + "\n")
+            f.write(self.outputs["ux_design"] + "\n")
+            
+            f.write("\n" + "-"*80 + "\n")
+            f.write("PHASE 5: STRATEGIC REVIEW\n")
             f.write("-"*80 + "\n")
             f.write(self.outputs["review"] + "\n")
         
