@@ -524,20 +524,21 @@ def main(destination: str = "Iceland", trip_duration: str = "5 days",
     print("[1/6] Creating Flight Specialist Agent (researches real flights)...")
     flight_agent = create_flight_agent(destination, trip_dates)
 
-    print("[2/6] Creating Accommodation Specialist Agent (researches real hotels)...")
+    print("[2/5] Creating Accommodation Specialist Agent (researches real hotels)...")
     hotel_agent = create_hotel_agent(destination, trip_dates)
 
-    print("[3/6] Creating Travel Planner Agent (researches real attractions)...")
+    print("[3/5] Creating Travel Planner Agent (researches real attractions)...")
     itinerary_agent = create_itinerary_agent(destination, trip_duration)
 
-    print("[4/6] Creating Food & Dining Specialist Agent (curates culinary experiences)...")
+    print("[4/5] Creating Food & Dining Specialist Agent (curates culinary experiences)...")
     food_specialist_agent = create_food_specialist_agent(destination)
 
-    print("[5/6] Creating Financial Advisor Agent (analyzes real costs)...")
+    print("[5/5] Creating Financial Advisor Agent (analyzes real costs)...")
     budget_agent = create_budget_agent(destination)
 
-    print("[6/6] Creating UX/UI Designer Agent (designs travel app interface)...")
-    ux_designer_agent = create_ux_designer_agent()
+    # UX/UI Designer removed - not needed for travel planning output
+    # print("[6/6] Creating UX/UI Designer Agent (designs travel app interface)...")
+    # ux_designer_agent = create_ux_designer_agent()
 
     print("\n✅ All agents created successfully!")
     print()
@@ -549,19 +550,19 @@ def main(destination: str = "Iceland", trip_duration: str = "5 days",
     itinerary_task = create_itinerary_task(itinerary_agent, destination, trip_duration, trip_dates)
     food_dining_task = create_food_dining_task(food_specialist_agent, destination, trip_duration, trip_dates)
     budget_task = create_budget_task(budget_agent, destination, trip_duration)
-    ux_design_task = create_ux_design_task(ux_designer_agent, destination, trip_duration)
+    # ux_design_task = create_ux_design_task(ux_designer_agent, destination, trip_duration)
 
     print("Tasks created successfully!")
     print()
 
     # Create the crew with sequential task execution
     print("Forming the Travel Planning Crew...")
-    print("Task Sequence: FlightAgent → HotelAgent → ItineraryAgent → FoodSpecialistAgent → BudgetAgent → UXDesignerAgent")
+    print("Task Sequence: FlightAgent → HotelAgent → ItineraryAgent → FoodSpecialistAgent → BudgetAgent")
     print()
 
     crew = Crew(
-        agents=[flight_agent, hotel_agent, itinerary_agent, food_specialist_agent, budget_agent, ux_designer_agent],
-        tasks=[flight_task, hotel_task, itinerary_task, food_dining_task, budget_task, ux_design_task],
+        agents=[flight_agent, hotel_agent, itinerary_agent, food_specialist_agent, budget_agent],
+        tasks=[flight_task, hotel_task, itinerary_task, food_dining_task, budget_task],
         verbose=True,
         process="sequential"  # Sequential task execution
     )
