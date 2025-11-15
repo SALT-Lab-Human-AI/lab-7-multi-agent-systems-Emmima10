@@ -101,25 +101,31 @@ class AgentConfig:
 
     RESEARCH_AGENT = {
         "name": "ResearchAgent",
-        "role": "Market Researcher",
+        "role": "Senior Market Intelligence Specialist",
         "temperature": 0.7,
     }
 
     ANALYSIS_AGENT = {
         "name": "AnalysisAgent",
-        "role": "Product Analyst",
+        "role": "Strategic Business Analyst",
         "temperature": 0.7,
     }
 
     BLUEPRINT_AGENT = {
         "name": "BlueprintAgent",
-        "role": "Product Designer",
+        "role": "Lead Product Architect",
+        "temperature": 0.7,
+    }
+
+    UX_DESIGNER_AGENT = {
+        "name": "UXDesignerAgent",
+        "role": "Senior UX/UI Designer",
         "temperature": 0.7,
     }
 
     REVIEWER_AGENT = {
         "name": "ReviewerAgent",
-        "role": "Product Reviewer",
+        "role": "Executive Product Strategist",
         "temperature": 0.7,
     }
 
@@ -130,6 +136,7 @@ class AgentConfig:
             "research": cls.RESEARCH_AGENT,
             "analysis": cls.ANALYSIS_AGENT,
             "blueprint": cls.BLUEPRINT_AGENT,
+            "ux_design": cls.UX_DESIGNER_AGENT,
             "reviewer": cls.REVIEWER_AGENT,
         }
         return agents.get(agent_type, {})
@@ -143,6 +150,7 @@ class WorkflowConfig:
         "research",
         "analysis",
         "blueprint",
+        "ux_design",
         "review",
     ]
 
@@ -151,6 +159,7 @@ class WorkflowConfig:
         "research": "Market Research & Competitive Analysis",
         "analysis": "Market Gap Analysis & Opportunities",
         "blueprint": "Product Blueprint Creation",
+        "ux_design": "User Experience & Interface Design",
         "review": "Strategic Review & Recommendations",
     }
 
@@ -159,6 +168,7 @@ class WorkflowConfig:
         "research": "Conduct market analysis for AI-powered interview platforms",
         "analysis": "Identify 3 key market opportunities and gaps",
         "blueprint": "Create product blueprint with features and user flows",
+        "ux_design": "Design user interface mockups and user experience flows",
         "review": "Review blueprint and provide strategic recommendations",
     }
 

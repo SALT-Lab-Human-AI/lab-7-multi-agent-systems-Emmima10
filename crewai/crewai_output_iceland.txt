@@ -1,0 +1,34 @@
+================================================================================
+CrewAI Multi-Agent Travel Planning System - Real API Execution Report
+Planning a 5 days Trip to Iceland
+================================================================================
+
+Trip Details:
+  Destination: Iceland
+  Duration: 5 days
+  Dates: January 15-20, 2026
+  Departure: New York
+  Travelers: 2
+  Budget Preference: mid-range
+
+Execution Time: 2025-11-15 16:35:52.589653
+API Version: REAL API CALLS (OpenAI GPT-4)
+Data Source: Web research via OpenAI
+
+IMPORTANT NOTES:
+- All flight prices, hotel costs, and attraction information is based on real data
+- Prices are current as of the date this was run
+- Hotel availability and prices may vary by booking date
+- Weather conditions and attraction hours should be verified before travel
+
+FINAL TRAVEL PLAN REPORT:
+--------------------------------------------------------------------------------
+A comprehensive budget report for a 5-day trip to Iceland, including:
+- Flights: $518 (budget), $548 (mid-range), $568 (luxury)
+- Accommodation (5 nights): $200-$300 (budget), $900-$1,100 (mid-range), $1,500-$1,750 (luxury) or $3,000-$3,250 (luxury alternative)
+- Meals (5 days): $150-$250 (budget), $250-$500 (mid-range), $750-$1,500 (luxury)
+- Transportation: $100-$200 (budget), $200-$400 (mid-range), $400-$600 (luxury)
+- Activities and Entrance Fees: $200-$300 (budget), $300-$500 (mid-range), $500-$1,000 (luxury)
+- Total Cost Estimates: $1,168-$1,750 (budget), $2,048-$3,300 (mid-range), $3,718-$6,100 (luxury)
+- Cost-Saving Tips: visit during the off-season, book in advance, pack snacks, and use public transportation.
+--------------------------------------------------------------------------------
